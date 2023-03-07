@@ -1,31 +1,34 @@
 import * as React from 'react';
+import { useState } from 'react';
+import { Text, View } from 'react-native';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-reanimated-image-viewer';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import ImageViewer from 'react-native-reanimated-image-viewer';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
+  const [visible, setVisible] = useState(false);
+  const imageUrl = 'https://random.imagecdn.app/500/500';
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text
+          onPress={() => {
+            setVisible(true);
+          }}
+        >
+          click
+        </Text>
+      </View>
+      <ImageViewer
+        imageUrl={imageUrl}
+        width={2726}
+        height={2047}
+        visible={visible}
+        animationType="fade"
+        onRequestClose={() => {
+          setVisible(false);
+        }}
+      />
+    </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});
